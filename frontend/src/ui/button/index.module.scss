@@ -1,0 +1,29 @@
+$borderColorEnable: rgb(108, 120, 249);
+$borderColorDisable: rgba(255, 255, 255, 0.678);
+$arrowColor: rgba(255, 255, 255, 0.678);
+
+.root {
+  border-radius: calc(0.5vh + 5px);
+  position: relative;
+  width: inherit;
+  height: inherit;
+  font-size: inherit;
+
+  input {
+    height: inherit;
+    width: inherit;
+
+    padding: 5px 30px;
+    color: #fff;
+
+    font-size: inherit;
+    border-radius: inherit;
+    background-color: transparent;
+    border: 1.5px $borderColorDisable solid;
+
+    &.enableButton {
+      cursor: pointer;
+      border: 1.5px $borderColorEnable solid;
+    }
+  }
+}

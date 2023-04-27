@@ -1,0 +1,25 @@
+.root {
+  width: 100%;
+  height: max-content;
+  margin: 0;
+  padding: max(5px, 0.5vh);
+
+  font-size: max(13px, 1.3vh);
+  list-style-type: none;
+  overflow-wrap: break-word;
+  overflow: hidden;
+  color: red;
+
+  background-color: rgb(16, 16, 16);
+  border-radius: calc(0.2vh + 1px);
+  box-shadow: 0px 0px 1vh rgba(254, 254, 254, 0.255);
+
+  li {
+    color: rgb(255, 255, 255);
+    padding: 0 0.2vw;
+
+    &.active {
+      color: rgb(18, 189, 18);
+    }
+  }
+}

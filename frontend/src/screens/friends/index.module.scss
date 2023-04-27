@@ -1,0 +1,6 @@
+.root {
+}
+.splitScreen {
+  grid-template-columns: max(700px, 70%) min(300px, 30%);
+  max-height: 90vh;
+}

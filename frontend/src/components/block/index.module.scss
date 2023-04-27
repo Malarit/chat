@@ -1,0 +1,14 @@
+@import "../../assets/style/general.module.scss";
+
+.root {
+  width: 100%;
+  height: max-content;
+  overflow: hidden;
+
+  box-shadow: $boxShadow;
+  border-radius: $borderRadius;
+}
+
+.padding {
+  padding: max(7px, 0.7vh) max(10px, 1vw);
+}

@@ -1,0 +1,11 @@
+@import "../../assets/style/general.module.scss";
+
+.root {
+  background-color: transparent;
+  border: none;
+  font-size: calc($justText);
+  margin: 0 auto;
+  color: #fff;
+
+  cursor: pointer;
+}

@@ -1,0 +1,72 @@
+@import "../../assets/style/general.module.scss";
+
+.root {
+  width: 100%;
+  position: relative;
+}
+
+.poster {
+  height: max(250px, 25vh);
+
+  width: 100%;
+  object-fit: cover;
+}
+
+.body {
+  display: flex;
+  padding: $marginTopScreen;
+}
+
+.avatar {
+  margin-top: min(-75px, -7.5vh);
+  $size: max(150px, 15vh);
+
+  min-width: $size;
+  height: $size;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+
+  margin-left: max(20px, 1.5vw);
+
+  div {
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+    background-color: $bodyColor;
+    padding: max(5px, 0.5vh);
+  }
+
+  img {
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.userInfo {
+  width: 80%;
+  min-height: min(75px, 7.5vh);
+
+  font-size: calc($justText * 1.5);
+  margin-left: $marginLeft;
+
+  span {
+    font-size: $justText;
+  }
+}
+
+.buttons {
+  display: flex;
+
+  div {
+    margin: 0 calc($marginLeft / 2);
+    height: max(40px, 4vh);
+    font-size: max(15px, 1.5vh);
+
+    input {
+      padding: 0 max(20px, 2vw);
+    }
+  }
+}

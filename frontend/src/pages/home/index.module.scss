@@ -1,0 +1,48 @@
+@import "../../assets/style/general.module.scss";
+
+.root {
+}
+
+.button {
+  max-width: clamp(50px, 50%, 250px);
+  height: 30px;
+}
+
+.container {
+  @include container();
+  margin-top: $marginTopScreen;
+}
+
+.menu_ClassName {
+  overflow: hidden;
+}
+
+.menu_ulClassName {
+  // padding: max(5px, 0.5vh) 0;
+}
+
+.menu_liClassName {
+  display: flex;
+  align-items: center;
+  padding: max(10px, 1vh) max(10px, 1vh);
+  font-size: $justText;
+
+  &:hover {
+    cursor: pointer;
+    background-color: $hoverColor;
+    border-radius: $borderRadius;
+  }
+
+  img {
+    width: max(18px, 2vh);
+    margin-right: max(10px, 1vh);
+  }
+}
+
+.splitScreen {
+  height: 100%;
+  min-height: 90vh;
+}
+
+.screen {
+}

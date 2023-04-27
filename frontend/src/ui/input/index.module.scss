@@ -1,0 +1,43 @@
+$padding: 7px 10px;
+$inputColor: rgb(43, 43, 43);
+
+.root {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  position: relative;
+  margin: 0;
+  height: inherit;
+  font-size: inherit;
+
+  input {
+    height:  max(40px, 3.7vh);
+    background-color: $inputColor;
+    border: none;
+    color: #fff;
+    padding: $padding;
+    border-radius: 5px;
+    outline: none;
+    z-index: 2;
+  }
+
+  label {
+    padding: $padding;
+    position: absolute;
+    left: 20px;
+    z-index: 4;
+    transition: all 0.5s ease;
+    pointer-events: none;
+    font-size: inherit;
+  }
+}
+
+.line {
+  position: absolute;
+  width: 0;
+  height: 2px;
+  background-color: $inputColor;
+  left: 20px;
+  z-index: 3;
+  transition: all 0.3s ease;
+}

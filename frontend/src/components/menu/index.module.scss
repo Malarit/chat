@@ -1,0 +1,12 @@
+@import "../../assets/style/general.module.scss";
+
+.root {
+  width: calc(100% - 4vw);
+  height: max-content;
+
+  border-radius: $borderRadius;
+  box-shadow: $boxShadow;
+}
+.liActiveClassName {
+  color: $siteColor;
+}

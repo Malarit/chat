@@ -1,0 +1,40 @@
+@import "../../assets/style/general.module.scss";
+
+.splitScreen {
+  height: max-content;
+  grid-template-columns: 1fr max(250px, 25%);
+
+  div {
+    &:nth-of-type(2) {
+      display: flex;
+      justify-content: end;
+    }
+  }
+}
+
+.menu {
+  display: flex;
+  align-items: center;
+
+  padding: max(7px, 0.7vh) max(7px, 0.7vw);
+  border-radius: $borderRadius;
+
+  font-size: $justText;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $hoverColor;
+  }
+
+  img {
+    margin-right: max(5px, 0.5vw);
+    max-width: 100%;
+    height: max(20px, 2vh);
+  }
+}
+
+.jsxListWrapper {
+  &:not(:first-of-type) {
+    margin-top: calc($marginTopScreen * 1.2);
+  }
+}

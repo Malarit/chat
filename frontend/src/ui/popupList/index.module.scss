@@ -1,0 +1,25 @@
+.popup {
+  position: absolute;
+  width: 100%;
+
+  border-bottom-left-radius: 5%;
+  border-bottom-right-radius: 5%;
+  background-color: rgb(16, 16, 16);
+  box-shadow: 0px 0px 1vh rgba(254, 254, 254, 0.573);
+
+  opacity: 0;
+  transition: display 51s ease;
+  pointer-events: none;
+  
+  &.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  ul {
+    width: 100%;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+}

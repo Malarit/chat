@@ -1,0 +1,16 @@
+$padding: max(5px, 0.5vh) max(5px, 0.5vw);
+
+.root {
+  width: inherit;
+  height: inherit;
+
+  padding: $padding;
+
+  outline: none;
+  border: none;
+  border-radius: calc(0.5vh + 5px);
+  font-size: max(15px, 1.5vh);
+
+  color: #fff;
+  background-color: rgb(43, 43, 43);
+}

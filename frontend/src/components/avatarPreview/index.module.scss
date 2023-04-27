@@ -1,0 +1,56 @@
+@import "../../assets/style/general.module.scss";
+
+.root {
+  width: 100%;
+  
+  h3 {
+    font-size: $justHeader;
+  }
+
+  & > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-top: $marginTop;
+
+    div {
+      display: flex;
+      align-items: center;
+
+      input {
+        width: max(150px, 8vw);
+        height: $buttonHeight;
+
+        font-size: $justText;
+      }
+    }
+
+    img {
+      $size: max(150px, 15vh);
+      max-width: 100%;
+
+      border-radius: 50%;
+      object-fit: cover;
+
+      border: rgba(255, 255, 255, 0.222) 1px solid;
+
+      @for $i from 1 through 3 {
+        &:nth-of-type(#{$i}) {
+          $newSize: calc($size / $i); // (1 + 2 * ($i - 1))
+
+          width: $newSize;
+          height: $newSize;
+        }
+      }
+
+      &:not(:first-of-type) {
+        margin-left: $marginLeft;
+      }
+    }
+  }
+}
+
+#file {
+  display: none;
+}

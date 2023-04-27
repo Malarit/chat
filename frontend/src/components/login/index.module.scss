@@ -1,0 +1,34 @@
+@import "../../assets/style/general.module.scss";
+
+.root {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.input {
+  width: 100%;
+  // height: $heightInput;
+  margin-top: $marginTopScreen;
+  font-size: $justText;
+  position: relative;
+}
+
+.info {
+  margin-top: 1vh;
+}
+
+.button {
+  margin-top: calc($marginTop * 2);
+  height: max(40px, 4vh);
+  width: max(100px, 8vw);
+  font-size: $justText;
+}
+
+.header {
+  color: $siteColor;
+  font-size: $justText;
+  @include header(1.5);
+}

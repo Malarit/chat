@@ -1,0 +1,11 @@
+.splitScreen {
+  grid-template-columns: max(250px, 25%) 1fr;
+  height: 90vh;
+}
+.userCard {
+  // background-color: rgb(19, 19, 19);
+  img {
+    min-width: max(40px, 7vh);
+    height: max(40px, 7vh);
+  }
+}

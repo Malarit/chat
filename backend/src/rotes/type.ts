@@ -9,19 +9,19 @@ type authorization = {
   email: string;
   password: string;
 };
-export type reqAuth = TypedRequest<authorization>;
+export type auth = TypedRequest<authorization>;
 
 type registration = {
   userName: string;
   password: string;
   email: string;
 };
-export type reqReg = TypedRequest<registration>;
+export type reg = TypedRequest<registration>;
 
 type getUser = {
-  id: number;
+  id?: number;
 };
-export type reqUserGet = TypedRequest<getUser>;
+export type userGet = TypedRequest<getUser>;
 
 type putUser = {
   userName?: string;
@@ -32,12 +32,12 @@ type putUser = {
   avatar?: string;
 };
 
-export type reqUserPut = TypedRequest<putUser>;
+export type userPut = TypedRequest<putUser>;
 
 type postMessage = {
-  firstUser: number;
-  secondUser: number;
+  sideUserId?: number;
+  chatId?: string;
   text: string;
   time: string;
 };
-export type reqMessagePost = TypedRequest<postMessage>;
+export type messagePost = TypedRequest<postMessage>;

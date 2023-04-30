@@ -35,10 +35,20 @@ export const useQueryUser = (userId: number | undefined) => {
   );
 };
 
+export const useQueryUsers = () => {
+  return useQuery("users", () => axi.get.users(), {
+    refetchOnWindowFocus: false,
+  });
+};
+
 export const useMutationAuthorization = (option: mutationOption) => {
   return mutation(axi.post.authorization, option);
 };
 
 export const useMutationRegistration = (option: mutationOption) => {
   return mutation(axi.post.registration, option);
+};
+
+export const useMutationMessage = (option: mutationOption) => {
+  return mutation(axi.post.message, option);
 };

@@ -1,11 +1,13 @@
 import React from "react";
 import Chat from "../../components/chat";
+import { useMutationMessage } from "../../hooks/queries";
 
 import { message } from "../../components/chat/type";
 
 const ChatContainer: React.FC = () => {
   const refInput = React.useRef<any>(null);
   const refBodyChat = React.useRef<HTMLDivElement>(null);
+  // const mutation = useMutationMessage();
   const [messages, setMessages] = React.useState<message[]>([
     {
       text: "asd",

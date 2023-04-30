@@ -3,7 +3,7 @@ import { useAppSelector } from "../../redux/hooks";
 
 import UserHeader from "../../components/userHeader";
 
-import screensUrlParams from "../../hooks/screensUrlParams";
+import useScreensUrlParams from "../../hooks/useScreensUrlParams";
 import { setImgDomain } from "./../../services/setImgDomain";
 import { useQueryUser } from "../../hooks/queries";
 
@@ -13,10 +13,11 @@ import avatarDef from "../../assets/img/avatar.jpg";
 import posterDef from "../../assets/img/poster.webp";
 
 const UserHeaderContainer: React.FC = () => {
-  const { searchParams } = screensUrlParams();
+  const { searchParams } = useScreensUrlParams();
   const [userId, setUserId] = React.useState(0);
   const [itsMe, setItsMe] = React.useState(false);
   const userIdRedux = useAppSelector(selectUserId);
+
   React.useEffect(() => {
     const id = searchParams.get("user");
     setUserId(Number(id));

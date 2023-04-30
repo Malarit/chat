@@ -5,7 +5,7 @@ import { bdFindOne } from "../db/query.js";
 import { User } from "../models/models.js";
 import { jwtVerify } from "./jwt.js";
 
-const verifyToken = async (req: Request, res: Response) => {
+const verifyToken = async (req: Request<any, any, any, any, any>, res: Response) => {
   try {
     const token: string = req.cookies[config.jwt.ACCESS_TOKEN_NAME];
 

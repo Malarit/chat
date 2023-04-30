@@ -12,7 +12,7 @@ import { selectUserId } from "./../../redux/slices/account/selectors";
 import { setActiveScreen } from "../../redux/slices/screen/slice";
 
 import GetText from "./../../hooks/getText";
-import screensUrlParams, { iurls } from "../../hooks/screensUrlParams";
+import screensUrlParams, { iurls } from "../../hooks/useScreensUrlParams";
 
 import iam from "../../assets/icons/iam.svg";
 
@@ -27,7 +27,7 @@ const MenuContainer: React.FC<menuContainer> = (props) => {
   const dispatch = useAppDispatch();
   const activeScreen = useAppSelector(selectActiveScreen);
   const userId = useAppSelector(selectUserId);
-  const { setScreenOption } = screensUrlParams();
+  const { setScreenParams } = screensUrlParams();
 
   const screenOptions: iurls = {
     MyPage: {
@@ -75,7 +75,7 @@ const MenuContainer: React.FC<menuContainer> = (props) => {
   ];
 
   function onClickLi(e: any, clickValue: screens) {
-    setScreenOption(clickValue, screenOptions[clickValue]);
+    setScreenParams(clickValue, screenOptions[clickValue]);
     dispatch(setActiveScreen(clickValue));
   }
 

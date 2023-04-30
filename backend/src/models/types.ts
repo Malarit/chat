@@ -22,7 +22,7 @@ export type user_model = ModelDefined<
 >;
 
 interface chat {
-  id: number;
+  id: string;
   firstUser: number;
   secondUser: number;
 }
@@ -30,7 +30,7 @@ export type chat_model = ModelDefined<chat, nodeAttributes<chat, "id">>;
 
 interface chatMessages {
   id: number;
-  chat_id: number;
+  chat_id: string;
   text: string;
   time: string;
 }

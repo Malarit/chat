@@ -54,9 +54,9 @@ export const User: mt.user_model = sequelize.define("User", {
 
 export const Chat: mt.chat_model = sequelize.define("Chat", {
   id: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.UUID,
+    defaultValue: Sequelize.UUIDV4,
     primaryKey: true,
-    autoIncrement: true,
   },
   firstUser: {
     type: DataTypes.INTEGER,
@@ -84,7 +84,7 @@ export const ChatMessages: mt.chatMessages_model = sequelize.define(
       autoIncrement: true,
     },
     chat_id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
     },
     text: {

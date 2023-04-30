@@ -1,13 +1,7 @@
 import { Request, Response, Router } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
 
-import {
-  reqAuth,
-  reqMessagePost,
-  reqReg,
-  reqUserGet,
-  reqUserPut,
-} from "./type.js";
+import * as req from "./type.js";
 
 import { Chat, User, ChatMessages } from "../models/models.js";
 import { getHash, verifieHash } from "../utils/hashedPassword.js";
@@ -17,6 +11,8 @@ import { bdFindOne } from "../db/query.js";
 
 import verifyToken from "../utils/verifyToken.js";
 import { upload } from "../middleware/upload.js";
+import { Op } from "sequelize";
+import objToArray from "../utils/objToArray.js";
 
 const router = Router();
 
@@ -25,7 +21,7 @@ router.get("/itsMe", async (req, res) => {
   if (id) res.status(200).json({ id });
 });
 
-router.post("/authorization", async (req: reqAuth, res) => {
+router.post("/authorization", async (req: req.auth, res) => {
   try {
     const { email, password } = req.body;
 
@@ -56,7 +52,7 @@ router.post("/authorization", async (req: reqAuth, res) => {
   }
 });
 
-router.post("/registration", async (req: reqReg, res) => {
+router.post("/registration", async (req: req.reg, res) => {
   try {
     const { userName, password, email } = req.body;
 
@@ -85,24 +81,37 @@ router.post("/registration", async (req: reqReg, res) => {
   }
 });
 
-router.get("/user", async (req: reqUserGet, res) => {
+router.get("/user", async (req: req.userGet, res) => {
   const { id } = req.query;
+  const excludeUser = ["password", "email", "updatedAt"];
+  let user;
 
   if (!id) {
     res.status(404).json("Not found");
     return;
   }
 
-  const user = await bdFindOne(User, {
-    attributes: { exclude: ["password", "email", "updatedAt"] },
-    where: {
-      id,
-    },
-  });
+  if (id) {
+    user = await bdFindOne(User, {
+      attributes: { exclude: excludeUser },
+      where: {
+        id,
+      },
+    });
+  } else {
+    user = await User.findAll({
+      attributes: { exclude: excludeUser },
+    });
+  }
 
   if (!user) res.status(404).json("Not found");
 
   res.status(200).json(user);
+});
+
+router.get("/users", async (req, res) => {
+  const users = await User.findAll();
+  res.status(200).json(users);
 });
 
 router.put(
@@ -111,7 +120,7 @@ router.put(
     { name: "poster", maxCount: 1 },
     { name: "avatar", maxCount: 1 },
   ]),
-  async (req: reqUserPut, res: Response) => {
+  async (req: req.userPut, res: Response) => {
     const id = await verifyToken(req, res);
     if (!id) return;
 
@@ -140,30 +149,87 @@ router.put(
   }
 );
 
-router.get("/message", async (req: reqMessagePost, res) => {
+router.get("/chats", async (req, res) => {
+  const id = await verifyToken(req, res);
+  if (!id) return;
 
-})
+  const chat = await Chat.findAll({
+    where: {
+      [Op.or]: [{ firstUser: id }, { secondUser: id }],
+    },
+    raw: true,
+    nest: true,
+  });
 
-router.post("/message", async (req: reqMessagePost, res) => {
-  const { firstUser, secondUser, text, time } = req.body;
+  if (!chat) {
+    res.status(200).json([]);
+    return;
+  }
+
+  let result = chat.map((item) => {
+    const { firstUser, secondUser, ...chat } = item.get({ plain: true });
+    return {
+      ...chat,
+      sideUserId: [firstUser, secondUser].filter((userId) => userId !== id)[0],
+    };
+  });
+
+  const sideUsersId = objToArray(result, "sideUserId");
+
+  const users = (
+    await User.findAll({
+      attributes: ["id", "firstName", "secondName"],
+      where: {
+        id: sideUsersId,
+      },
+    })
+  ).map((item) => item.get({ plain: true }));
+
+  result = result.map((item) => {
+    const user = users.find((user) => user.id === item.sideUserId);
+    return {
+      ...item,
+      firstName: user?.firstName,
+      secondName: user?.secondName,
+    };
+  });
+
+  res.status(200).json(chat);
+});
+
+router.get("/messages", async (req, res) => {
+  res.status(200).json("");
+});
+
+router.post("/message", async (req: req.messagePost, res) => {
+  const { sideUserId, chatId, text, time } = req.body;
+
+  const id = await verifyToken(req, res);
+  if (!id) return;
 
   try {
-    const getChat = async () => {
-      return bdFindOne(Chat, {
+    const bdChatWhere = chatId ? { id: chatId } : undefined;
+    let chat = await bdFindOne(Chat, {
+      attributes: ["id"],
+      where: bdChatWhere,
+    });
+
+    if (!chat && sideUserId) {
+      Chat.build({
+        firstUser: id,
+        secondUser: sideUserId,
+      });
+
+      chat = await bdFindOne(Chat, {
         attributes: ["id"],
         where: {
-          firstUser,
-          secondUser,
+          firstUser: id,
+          secondUser: sideUserId,
         },
       });
-    };
-
-    let chat = await getChat();
-    if (!chat) {
-      await Chat.build({ firstUser, secondUser }).save();
+    } else {
+      res.status(400).json("sideUserId and chatId is undefined");
     }
-
-    chat = await getChat();
 
     ChatMessages.build({
       chat_id: chat.id,

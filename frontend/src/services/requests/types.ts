@@ -8,6 +8,14 @@ export interface post {
   registration: {
     req: post["authorization"]["req"] & { userName: string };
   };
+  message: {
+    req: {
+      firstUser: number;
+      secondUser: number;
+      text: string;
+      time: string;
+    };
+  };
 }
 
 export interface get {

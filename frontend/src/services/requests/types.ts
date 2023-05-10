@@ -10,8 +10,7 @@ export interface post {
   };
   message: {
     req: {
-      firstUser: number;
-      secondUser: number;
+      sideUserId: number;
       text: string;
       time: string;
     };
@@ -31,10 +30,34 @@ export interface get {
       avatar?: string;
       poster?: string;
       createdAt: string;
-      firstName?: string;
-      secondName?: string;
+      firstName: string;
+      secondName: string;
       description?: string;
       city?: string;
+    };
+  };
+  chats: {
+    res: {
+      chatId: string;
+      sideUserId: number;
+      firstName: string;
+      secondName: string;
+      avatar: string;
+      messages: {
+        text: string;
+        time: string;
+        user_id: number;
+      }[];
+    };
+  };
+  messages: {
+    res: {
+      text: string;
+      time: string;
+      user_id: number;
+    };
+    req: {
+      chatId: string;
     };
   };
 }

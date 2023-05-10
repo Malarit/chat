@@ -13,9 +13,6 @@ const axi = {
     async registration(data: post["registration"]["req"]) {
       return axios.post("/registration", data);
     },
-    async message(data: post["message"]["req"]) {
-      return axios.post("/message", data);
-    },
   },
   get: {
     async itsMe() {
@@ -34,6 +31,16 @@ const axi = {
     },
     async users() {
       return axios.get<get["user"]["res"][]>("/users").then((res) => res.data);
+    },
+    async chats() {
+      return axios.get<get["chats"]["res"][]>("/chats").then((res) => res.data);
+    },
+    async messages(data: get["messages"]["req"]) {
+      return axios
+        .get<get["messages"]["res"][]>("/messages", {
+          params: data,
+        })
+        .then((res) => res.data);
     },
   },
   put: {

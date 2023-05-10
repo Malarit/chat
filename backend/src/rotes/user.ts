@@ -157,8 +157,6 @@ router.get("/chats", async (req, res) => {
     where: {
       [Op.or]: [{ firstUser: id }, { secondUser: id }],
     },
-    raw: true,
-    nest: true,
   });
 
   if (!chat) {
@@ -166,19 +164,45 @@ router.get("/chats", async (req, res) => {
     return;
   }
 
+  const chatsId = objToArray(
+    chat.map((chat) => chat.get({ plain: true })),
+    "id"
+  );
+
+  const messages = (
+    await ChatMessages.findAll({
+      attributes: ["text", "time", "user_id", "chat_id"],
+      where: {
+        chat_id: chatsId,
+      },
+    })
+  ).map((message) => message.get({ plain: true }));
+
   let result = chat.map((item) => {
-    const { firstUser, secondUser, ...chat } = item.get({ plain: true });
+    const { firstUser, secondUser, id: chatId } = item.get({ plain: true });
+
+    const sideUserId = [firstUser, secondUser].filter(
+      (userId) => userId !== id
+    )[0];
+    const chatMessages = messages
+      .filter((message) => message.chat_id === chatId)
+      .map((message) => {
+        const { chat_id, ...data } = message;
+        return data;
+      });
+
     return {
-      ...chat,
-      sideUserId: [firstUser, secondUser].filter((userId) => userId !== id)[0],
+      chatId,
+      sideUserId,
+      messages: chatMessages,
     };
   });
 
-  const sideUsersId = objToArray(result, "sideUserId");
+  const sideUsersId = objToArray(result, "sideUserId") as number[];
 
   const users = (
     await User.findAll({
-      attributes: ["id", "firstName", "secondName"],
+      attributes: ["id", "firstName", "secondName", "avatar"],
       where: {
         id: sideUsersId,
       },
@@ -191,53 +215,28 @@ router.get("/chats", async (req, res) => {
       ...item,
       firstName: user?.firstName,
       secondName: user?.secondName,
+      avatar: user?.avatar,
     };
   });
 
-  res.status(200).json(chat);
+  res.status(200).json(result);
 });
 
-router.get("/messages", async (req, res) => {
-  res.status(200).json("");
-});
-
-router.post("/message", async (req: req.messagePost, res) => {
-  const { sideUserId, chatId, text, time } = req.body;
+router.get("/messages", async (req: req.messagesGet, res) => {
+  const { chatId } = req.query;
 
   const id = await verifyToken(req, res);
   if (!id) return;
 
   try {
-    const bdChatWhere = chatId ? { id: chatId } : undefined;
-    let chat = await bdFindOne(Chat, {
-      attributes: ["id"],
-      where: bdChatWhere,
+    const messages = await ChatMessages.findAll({
+      attributes: ["text", "time", "user_id"],
+      where: {
+        chat_id: chatId,
+      },
     });
 
-    if (!chat && sideUserId) {
-      Chat.build({
-        firstUser: id,
-        secondUser: sideUserId,
-      });
-
-      chat = await bdFindOne(Chat, {
-        attributes: ["id"],
-        where: {
-          firstUser: id,
-          secondUser: sideUserId,
-        },
-      });
-    } else {
-      res.status(400).json("sideUserId and chatId is undefined");
-    }
-
-    ChatMessages.build({
-      chat_id: chat.id,
-      text,
-      time,
-    }).save();
-
-    res.status(200).json("Ok");
+    res.status(200).json(messages);
   } catch (error) {
     res.status(400).json({ Failed: error });
   }

@@ -1,10 +1,5 @@
 import { AxiosResponse } from "axios";
-import {
-  QueryClient,
-  useMutation,
-  UseMutationOptions,
-  useQuery,
-} from "react-query";
+import { useMutation, UseMutationOptions, useQuery } from "react-query";
 import axi from "../services/requests/requests";
 
 type mutationOption = Omit<
@@ -41,14 +36,10 @@ export const useQueryUsers = () => {
   });
 };
 
-export const useMutationAuthorization = (option: mutationOption) => {
+export const useMutationAuthorization = (option?: mutationOption) => {
   return mutation(axi.post.authorization, option);
 };
 
-export const useMutationRegistration = (option: mutationOption) => {
+export const useMutationRegistration = (option?: mutationOption) => {
   return mutation(axi.post.registration, option);
-};
-
-export const useMutationMessage = (option: mutationOption) => {
-  return mutation(axi.post.message, option);
 };

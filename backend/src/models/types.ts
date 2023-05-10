@@ -33,6 +33,7 @@ interface chatMessages {
   chat_id: string;
   text: string;
   time: string;
+  user_id: number;
 }
 export type chatMessages_model = ModelDefined<
   chatMessages,

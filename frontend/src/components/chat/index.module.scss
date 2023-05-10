@@ -24,13 +24,12 @@
 }
 
 .body {
-  height: 100%;
+  height: 100%; 
   padding: max(20px, 2vh) 0;
   max-height: 83vh;
 
   display: flex;
   flex-direction: column;
-  justify-content: end;
 
   overflow-x: hidden;
   overflow-y: scroll;

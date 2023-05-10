@@ -22,6 +22,7 @@
   $size: max(150px, 15vh);
 
   min-width: $size;
+  max-width: $size;
   height: $size;
   overflow: hidden;
   position: relative;

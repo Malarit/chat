@@ -35,9 +35,13 @@ type putUser = {
 export type userPut = TypedRequest<putUser>;
 
 type postMessage = {
-  sideUserId?: number;
-  chatId?: string;
+  sideUserId: number;
   text: string;
   time: string;
 };
 export type messagePost = TypedRequest<postMessage>;
+
+type getMessages = {
+  chatId: string;
+};
+export type messagesGet = TypedRequest<getMessages>;

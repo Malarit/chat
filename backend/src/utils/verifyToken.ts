@@ -5,7 +5,20 @@ import { bdFindOne } from "../db/query.js";
 import { User } from "../models/models.js";
 import { jwtVerify } from "./jwt.js";
 
-const verifyToken = async (req: Request<any, any, any, any, any>, res: Response) => {
+export async function checkToken(token: string | undefined) {
+  if (!token) return;
+  return await bdFindOne(User, {
+    attributes: ["id"],
+    where: {
+      id: jwtVerify(token).data,
+    },
+  });
+}
+
+const verifyToken = async (
+  req: Request<any, any, any, any, any>,
+  res: Response
+) => {
   try {
     const token: string = req.cookies[config.jwt.ACCESS_TOKEN_NAME];
 
@@ -14,12 +27,7 @@ const verifyToken = async (req: Request<any, any, any, any, any>, res: Response)
       return;
     }
 
-    const user = await bdFindOne(User, {
-      attributes: ["id"],
-      where: {
-        id: jwtVerify(token).data,
-      },
-    });
+    const user = await checkToken(token);
 
     if (!user) {
       res.status(404).json("Couldn't find the user ");

@@ -18,6 +18,7 @@
 
   img {
     min-width: max(100px, 10vh);
+    max-width: max(100px, 10vh);
     height: max(100px, 10vh);
     border-radius: 50%;
     object-fit: cover;

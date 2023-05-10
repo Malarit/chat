@@ -1,10 +1,12 @@
 const ACTIONS = {
   CHAT: {
-    JOIN: "JOIN",
+    NEWCHAT: "NEWCHAT",
     SEND: "SEND",
   },
   USER: {
+    ISONLINE: "ISONLINE",
     ONLINE: "ONLINE",
+    OFFLINE: "OFFLINE",
   },
 };
 

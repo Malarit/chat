@@ -3,9 +3,14 @@ import { Route, Routes, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 
 import { selectLanguage } from "../redux/slices/account/selectors";
+import { selectSideUsersId } from "./../redux/slices/chats/selectors";
+import { removeOnlineUser, setOnlineUsers } from "../redux/slices/chats/slice";
 import { fetchItsMe, setLanguage } from "../redux/slices/account/slice";
+import { selectUserId } from "./../redux/slices/account/selectors";
 
 import { customMatch } from "../services/regex";
+import socket from "./../services/socket/index";
+import ACTIONS from "../services/socket/action";
 
 import Ui from "./../pages/ui/index";
 
@@ -18,6 +23,8 @@ const App: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const language = useAppSelector(selectLanguage);
+  const userId = useAppSelector(selectUserId);
+  const chatUser = useAppSelector(selectSideUsersId);
 
   const getUserId = () => {
     dispatch(fetchItsMe())
@@ -27,6 +34,7 @@ const App: React.FC = () => {
   };
 
   React.useEffect(() => {
+    getUserId();
     const timer = setInterval(() => {
       getUserId();
     }, 1000 * 1800); // 30 min
@@ -34,8 +42,19 @@ const App: React.FC = () => {
   }, []);
 
   React.useEffect(() => {
-    getUserId();
-  }, []);
+    if (!userId) return;
+    socket.emit(ACTIONS.USER.ONLINE, userId);
+    socket.on(ACTIONS.USER.ONLINE, (userId) => {
+      if (chatUser.includes(userId)) {
+        dispatch(setOnlineUsers(userId));
+      }
+    });
+    socket.on(ACTIONS.USER.OFFLINE, (userId) => {
+      if (chatUser.includes(userId)) {
+        dispatch(removeOnlineUser(userId));
+      }
+    });
+  }, [userId]);
 
   React.useEffect(() => {
     const lang = customMatch(navigator.language, "langRemoveRegion");

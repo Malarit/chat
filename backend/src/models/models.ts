@@ -95,9 +95,16 @@ export const ChatMessages: mt.chatMessages_model = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    user_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
   }
 );
 
 Chat.hasMany(ChatMessages, {
   foreignKey: "chat_id",
+});
+User.hasMany(ChatMessages, {
+  foreignKey: "user_id",
 });

@@ -3,14 +3,14 @@ import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 import userReducer from "./slices/account/slice";
 import windowReducer from "./slices/screen/slice";
 import settingsReducer from "./slices/settings/slice";
-import ChatsReducer from "./slices/chats/slice";
+import chatsReducer from "./slices/chats/slice";
 
 export const store = configureStore({
   reducer: {
     userReducer,
     windowReducer,
     settingsReducer,
-    ChatsReducer,
+    chatsReducer,
   },
 });
 
